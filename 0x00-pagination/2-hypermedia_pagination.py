@@ -24,6 +24,9 @@ class Server:
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
+        """
+        init
+        """
         self.__dataset = None
 
     def dataset(self) -> List[List]:
@@ -54,7 +57,7 @@ class Server:
         except IndexError:
             return []
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> dict[str, int]:
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
         """
         get hyper
         :param page:
