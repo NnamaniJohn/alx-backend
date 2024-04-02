@@ -3,7 +3,8 @@
 simple pagination
 """
 import csv
-from typing import List
+import math
+from typing import List, Dict
 from typing import Tuple
 
 
@@ -52,3 +53,30 @@ class Server:
             return self.__dataset[start: stop]
         except IndexError:
             return []
+
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> dict[str, int]:
+        """
+        get hyper
+        :param page:
+        :param page_size:
+        :return:
+        """
+        data = self.get_page(page, page_size)
+        total_pages = math.ceil(len(self.__dataset) / page_size)
+        if page == 1:
+            prev_page = None
+        else:
+            prev_page = page - 1
+        if page < total_pages:
+            next_page = page + 1
+        else:
+            next_page = None
+
+        return {
+            "page_size": page_size,
+            "page": page,
+            "data": data,
+            "next_page": next_page,
+            "prev_page": prev_page,
+            "total_pages": total_pages
+        }
