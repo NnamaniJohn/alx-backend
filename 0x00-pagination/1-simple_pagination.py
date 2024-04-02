@@ -38,4 +38,18 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-            pass
+        """
+        get page
+        :param page:
+        :param page_size:
+        :return:
+        """
+        assert type(page) is int, "Page must be a number"
+        assert type(page_size) is int, "Page size must be a number"
+        assert page > 0 and page_size > 0, "Page or Page size must be greater than zero"
+        start, stop = index_range(page, page_size)
+        try:
+            self.dataset()
+            return self.__dataset[start: stop]
+        except IndexError:
+            return []
