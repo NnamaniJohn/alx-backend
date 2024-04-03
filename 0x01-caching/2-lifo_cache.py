@@ -23,13 +23,12 @@ class LIFOCache(BaseCaching):
         :return:
         """
         if key is not None and item is not None:
-            first_key = ''
-            if len(self.cache_data) > 1:
-                first_key = next(reversed(self.cache_data))
+            if key in self.cache_data.keys():
+                self.cache_data.pop(key)
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+                first_key = self.cache_data.popitem()
+                print("DISCARD: {}".format(first_key[0]))
             self.cache_data[key] = item
-            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                self.cache_data.pop(first_key)
-                print("DISCARD: {}".format(first_key))
 
     def get(self, key):
         """
