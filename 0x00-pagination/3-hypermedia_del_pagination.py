@@ -4,7 +4,6 @@ Deletion-resilient hypermedia pagination
 """
 
 import csv
-import math
 from typing import List, Dict
 
 
@@ -33,7 +32,6 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
-            truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                 i: dataset[i] for i in range(len(dataset))
             }
@@ -46,11 +44,11 @@ class Server:
         :param page_size:
         :return:
         """
-        assert 0 <= index <= max(self.indexed_dataset().keys()),\
+        assert 0 <= index <= max(self.indexed_dataset().keys()), \
             "invalid range"
         rag = [x for x in self.indexed_dataset().keys() if index <= x]
         next_index = max(sorted(rag)[0: page_size + 1])
-        data = [ self.indexed_dataset()[x] for x in sorted(rag)[0: page_size]]
+        data = [self.indexed_dataset()[x] for x in sorted(rag)[0: page_size]]
         return {
             "index": index,
             "next_index": next_index,
