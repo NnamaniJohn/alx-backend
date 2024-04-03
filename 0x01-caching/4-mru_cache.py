@@ -15,6 +15,7 @@ class MRUCache(BaseCaching):
         """
         super().__init__()
         self.freq = {}
+        self.call = 0
 
     def put(self, key, item):
         """
@@ -24,10 +25,9 @@ class MRUCache(BaseCaching):
         :return:
         """
         if key is not None and item is not None:
-            self.cache_data[key] = item
-            if key not in self.freq.keys():
-                self.freq[key] = 0
-            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            if key in self.cache_data.keys():
+                self.cache_data.pop(key)
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
                 if not self.freq:
                     first_key = next(iter(self.cache_data))
                 else:
@@ -35,6 +35,10 @@ class MRUCache(BaseCaching):
                 self.cache_data.pop(first_key)
                 self.freq.pop(first_key)
                 print("DISCARD: {}".format(first_key))
+            self.cache_data[key] = item
+            if key not in self.freq.keys():
+                self.freq[key] = self.call
+                self.call += 1
 
     def get(self, key):
         """
@@ -44,7 +48,6 @@ class MRUCache(BaseCaching):
         """
         if key is None or key not in self.cache_data.keys():
             return None
-        if key not in self.freq.keys():
-            self.freq[key] = 0
-        self.freq[key] = self.freq[key] + 1
+        self.freq[key] = self.call
+        self.call += 1
         return self.cache_data[key]
