@@ -25,8 +25,6 @@ class LFUCache(BaseCaching):
         """
         if key is not None and item is not None:
             self.cache_data[key] = item
-            if key not in self.freq.keys():
-                self.freq[key] = 0
             if len(self.cache_data) > BaseCaching.MAX_ITEMS:
                 if not self.freq:
                     first_key = next(iter(self.cache_data))
@@ -35,6 +33,10 @@ class LFUCache(BaseCaching):
                 self.cache_data.pop(first_key)
                 self.freq.pop(first_key)
                 print("DISCARD: {}".format(first_key))
+            if key not in self.freq.keys():
+                self.freq[key] = 0
+            else:
+                self.freq[key] = self.freq[key] + 1
 
     def get(self, key):
         """
