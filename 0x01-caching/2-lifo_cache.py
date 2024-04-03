@@ -24,7 +24,7 @@ class LIFOCache(BaseCaching):
         """
         if key is not None and item is not None:
             first_key = ''
-            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+            if len(self.cache_data) > 1:
                 first_key = next(reversed(self.cache_data))
             self.cache_data[key] = item
             if len(self.cache_data) > BaseCaching.MAX_ITEMS:
